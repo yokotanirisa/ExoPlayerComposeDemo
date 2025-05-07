@@ -56,4 +56,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material3)
+    implementation(libs.navigation.compose)
+
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
 }

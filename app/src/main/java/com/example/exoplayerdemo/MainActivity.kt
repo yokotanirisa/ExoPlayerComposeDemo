@@ -3,45 +3,36 @@ package com.example.exoplayerdemo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.exoplayerdemo.ui.theme.ExoPlayerComposeDemoTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.core.net.toUri
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.exoplayerdemo.nav.NavRoutes
+import com.example.exoplayerdemo.screen.VideoListScreen
+import com.example.exoplayerdemo.screen.VideoScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            ExoPlayerComposeDemoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            MaterialTheme {
+                val navController = rememberNavController()
+                NavHost(navController, startDestination = NavRoutes.LIST) {
+                    composable(NavRoutes.LIST) {
+                        VideoListScreen(navController)
+                    }
+                    composable(
+                        "video?uri={uri}",
+                        arguments = listOf(navArgument("uri") { type = NavType.StringType })
+                    ) { backStackEntry ->
+                        val uriString = backStackEntry.arguments?.getString("uri") ?: ""
+                        VideoScreen(videoUri = uriString.toUri(), navController = navController)
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ExoPlayerComposeDemoTheme {
-        Greeting("Android")
     }
 }
