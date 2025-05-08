@@ -143,6 +143,7 @@ fun MainPlayerView(
             contentAlignment = Alignment.Center
         ) {
             Icon(
+                // todo 一時停止ボタンについてはデフォルトのものがなかったため一旦別のもの
                 imageVector = if (isPlaying) Icons.Default.Person else Icons.Default.PlayArrow,
                 contentDescription = "Play/Pause",
                 tint = Color.White,
@@ -153,6 +154,7 @@ fun MainPlayerView(
             )
         }
 
+        // todo シークバー修正必要
         Slider(
             value = if (mainPlayer.duration > 0) position / mainPlayer.duration.toFloat() else 0f,
             onValueChange = {
